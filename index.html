@@ -47,16 +47,17 @@
 
 <header class="site-header" id="site-header">
   <nav class="nav container" aria-label="Primary">
-    <a href="#home" class="nav-logo">Chandraprakash<span class="accent-text">.</span></a>
+    <a href="/" class="nav-logo">Chandraprakash<span class="accent-text">.</span></a>
     <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="#home" class="nav-link">Home</a></li>
-      <li><a href="#what-i-do" class="nav-link">Expertise</a></li>
-      <li><a href="#experience" class="nav-link">Experience</a></li>
-      <li><a href="#approach" class="nav-link">Approach</a></li>
-      <li><a href="#contact" class="nav-link nav-cta">Contact</a></li>
+      <li><a href="/#home" class="nav-link">Home</a></li>
+      <li><a href="/#what-i-do" class="nav-link">Expertise</a></li>
+      <li><a href="/#experience" class="nav-link">Experience</a></li>
+      <li><a href="/#approach" class="nav-link">Approach</a></li>
+      <li><a href="/blog/" class="nav-link">Writing</a></li>
+      <li><a href="/#contact" class="nav-link nav-cta">Contact</a></li>
     </ul>
   </nav>
 </header>
@@ -486,6 +487,35 @@
           <p class="tools-placeholder">Snowflake, BigQuery, Redshift, dimensional modeling</p>
         </article>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ WRITING TEASER ============ -->
+  <section id="writing" class="section writing-teaser">
+    <div class="container">
+      <p class="section-eyebrow" data-animate="fade-up">Writing</p>
+      <h2 class="section-heading" data-animate="fade-up">Notes on Data Quality</h2>
+
+      <div class="writing-grid">
+        <a href="/blog/what-is-data-quality/" class="writing-card" data-animate="fade-up">
+          <p class="post-card-meta">Data Quality</p>
+          <h3>What Data Quality Actually Means</h3>
+        </a>
+        <a href="/blog/data-quality-vs-data-governance/" class="writing-card" data-animate="fade-up">
+          <p class="post-card-meta">Data Governance</p>
+          <h3>Data Quality vs Data Governance</h3>
+        </a>
+        <a href="/blog/same-customer-multiple-systems/" class="writing-card" data-animate="fade-up">
+          <p class="post-card-meta">Data Integration</p>
+          <h3>Why the Same Customer Exists in Three Systems</h3>
+        </a>
+        <a href="/blog/silent-pipeline-failures/" class="writing-card" data-animate="fade-up">
+          <p class="post-card-meta">Data Reliability</p>
+          <h3>How to Catch a Pipeline Failing Silently</h3>
+        </a>
+      </div>
+
+      <a href="/blog/" class="writing-all" data-animate="fade-up">Read all writing &rarr;</a>
     </div>
   </section>
 

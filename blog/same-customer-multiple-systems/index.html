@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why the Same Customer Exists in Three Different Systems | Chandraprakash Jha</title>
+<meta name="description" content="It's one of the most common data problems in any growing organization, and one of the most misunderstood. Here's why it happens and what actually fixes it.">
+<meta name="author" content="Chandraprakash Jha">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://chandraprakash.tech/blog/same-customer-multiple-systems/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="Why the Same Customer Exists in Three Different Systems">
+<meta property="og:description" content="It's one of the most common data problems in any growing organization, and one of the most misunderstood.">
+<meta property="og:url" content="https://chandraprakash.tech/blog/same-customer-multiple-systems/">
+<meta property="og:image" content="/assets/og-image.jpg">
+<meta property="og:site_name" content="Chandraprakash Jha">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why the Same Customer Exists in Three Different Systems">
+<meta name="twitter:description" content="It's one of the most common data problems in any growing organization, and one of the most misunderstood.">
+<meta name="twitter:image" content="/assets/og-image.jpg">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0d13'/%3E%3Ccircle cx='9' cy='11' r='2.4' fill='%234f7cff'/%3E%3Ccircle cx='23' cy='9' r='2.4' fill='%232dd4bf'/%3E%3Ccircle cx='16' cy='22' r='2.4' fill='%234f7cff'/%3E%3Cpath d='M9 11L23 9M9 11L16 22M23 9L16 22' stroke='%233a4356' stroke-width='1.3'/%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Why the Same Customer Exists in Three Different Systems",
+  "description": "It's one of the most common data problems in any growing organization, and one of the most misunderstood. Here's why it happens and what actually fixes it.",
+  "author": { "@type": "Person", "name": "Chandraprakash Jha", "url": "https://chandraprakash.tech/" },
+  "datePublished": "2026-08-16",
+  "dateModified": "2026-08-16",
+  "url": "https://chandraprakash.tech/blog/same-customer-multiple-systems/",
+  "mainEntityOfPage": "https://chandraprakash.tech/blog/same-customer-multiple-systems/"
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a href="/" class="nav-logo">Chandraprakash<span class="accent-text">.</span></a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="/#home" class="nav-link">Home</a></li>
+      <li><a href="/#what-i-do" class="nav-link">Expertise</a></li>
+      <li><a href="/#experience" class="nav-link">Experience</a></li>
+      <li><a href="/#approach" class="nav-link">Approach</a></li>
+      <li><a href="/blog/" class="nav-link">Writing</a></li>
+      <li><a href="/#contact" class="nav-link nav-cta">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container blog-crumb"><a href="/blog/">&larr; Writing</a></div>
+
+  <div class="container article-header">
+    <p class="post-card-meta">Data Integration</p>
+    <h1>Why the Same Customer Exists in Three Different Systems</h1>
+    <p class="article-dek">It's one of the most common data problems in any growing organization, and one of the most misunderstood.</p>
+  </div>
+
+  <div class="container">
+    <article class="article-body">
+      <p>Almost every organization I've worked with, regardless of industry, has some version of this problem: the same person or account shows up as several different records across different systems. A CRM has one entry, billing has another, support has a third, and none of them agree on basic details like name spelling or contact info. Ask which one is correct and the honest answer is usually "depends who you ask."</p>
+
+      <p>It's tempting to treat this as a data entry problem and move on. It's rarely that simple, and the fixes that only address entry rarely hold.</p>
+
+      <h2>Why it actually happens</h2>
+
+      <p>A few causes show up over and over:</p>
+
+      <ul>
+        <li><strong>Systems built independently.</strong> Sales, support and billing tools usually get adopted at different times by different teams, with no shared identifier connecting a record in one to a record in another.</li>
+        <li><strong>No canonical key.</strong> Without a consistent unique identifier, systems fall back to matching on name, email or phone, all of which vary in format and change over time.</li>
+        <li><strong>Manual entry variance.</strong> "Jon Smith," "Jonathan Smith" and "J. Smith" are three strings and one person. Every manual entry point is a chance for that kind of drift.</li>
+        <li><strong>Mergers, migrations and new tools.</strong> Every time a new system gets bolted onto the stack, its data arrives with its own identifiers and its own history, disconnected from everything already in place.</li>
+      </ul>
+
+      <h2>Why a one-off matching script doesn't fix it</h2>
+
+      <p>The instinct is to write a script that fuzzy-matches records across systems and merges the duplicates. It works, once. Then a new record comes in next week through the same broken process that created the original duplicates, and you're right back where you started. A one-time cleanup treats the symptom. The systems that keep producing new duplicates are still doing exactly what they were doing before.</p>
+
+      <h2>What actually holds up</h2>
+
+      <p>The fixes that stick tend to have a few things in common:</p>
+
+      <ul>
+        <li><strong>A defined source of truth.</strong> One system (or one dataset) is designated as canonical for a given entity, and everything else references it rather than maintaining a competing copy.</li>
+        <li><strong>A real matching strategy, not just a script.</strong> Deterministic matching where a reliable shared key exists, probabilistic or fuzzy matching where it doesn't, with a clear, documented threshold for what counts as a match.</li>
+        <li><strong>Validation at the point of entry.</strong> Catching a likely duplicate when a record is created is far cheaper than reconciling it after it's propagated into five downstream reports.</li>
+        <li><strong>Ongoing monitoring, not a one-time project.</strong> New duplicates should be flagged automatically as they appear, not discovered months later when someone can't reconcile a customer count.</li>
+        <li><strong>An owner.</strong> Someone has to be accountable for the matching rules and for what happens when they don't agree, or the whole process quietly decays the same way it did before.</li>
+      </ul>
+
+      <p>This is integration and governance working together, not one or the other. The technical matching work only holds if there's ownership behind it, and the ownership only means something if there's an actual process enforcing it.</p>
+    </article>
+
+    <div class="article-cta">
+      <p>Data integration and identity resolution across systems is core to what I do.</p>
+      <a href="/#what-i-do" class="btn btn-primary">See What I Do</a>
+    </div>
+
+    <nav class="article-nav" aria-label="More articles">
+      <a href="/blog/silent-pipeline-failures/">
+        <span class="article-nav-label">Next</span>
+        How to Catch a Pipeline Failing Silently
+      </a>
+      <a href="/blog/">
+        <span class="article-nav-label">All Writing</span>
+        Back to index
+      </a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <strong>Chandraprakash Jha</strong>
+      <span>Data Engineering &bull; Data Quality &bull; Data Governance</span>
+    </div>
+    <p class="footer-copy">&copy; 2026 Chandraprakash Jha</p>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

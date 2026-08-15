@@ -1,0 +1,186 @@
+/* ==========================================================================
+   Blog / Writing — shared with styles.css (tokens, header, footer, buttons)
+   Load styles.css first, then this file, on every /blog page.
+   ========================================================================== */
+
+/* ---------- Breadcrumb ---------- */
+.blog-crumb {
+  padding: 40px 0 0;
+}
+.blog-crumb a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease);
+}
+.blog-crumb a:hover { color: var(--accent-soft); }
+
+/* ---------- Blog hub header ---------- */
+.blog-hero {
+  padding: 40px 0 60px;
+}
+.blog-hero h1 {
+  font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  max-width: 680px;
+  color: var(--text-primary);
+}
+.blog-hero p {
+  margin-top: 18px;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+/* ---------- Article index list ---------- */
+.post-list {
+  padding-bottom: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.post-card {
+  display: block;
+  padding: 28px 4px;
+  border-top: 1px solid var(--border-soft);
+  transition: opacity var(--dur-fast) var(--ease);
+}
+.post-list .post-card:last-child { border-bottom: 1px solid var(--border-soft); }
+.post-card:hover { opacity: 0.82; }
+.post-card-meta {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--teal);
+  font-weight: 600;
+}
+.post-card h2 {
+  margin-top: 10px;
+  font-size: 1.3rem;
+  font-weight: 650;
+  color: var(--text-primary);
+  letter-spacing: -0.005em;
+}
+.post-card p {
+  margin-top: 10px;
+  font-size: 0.96rem;
+  color: var(--text-secondary);
+  max-width: 640px;
+  line-height: 1.6;
+}
+.post-card-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-soft);
+}
+
+/* ---------- Article page ---------- */
+.article-header {
+  padding: 36px 0 0;
+  max-width: 700px;
+}
+.article-header .post-card-meta { margin-bottom: 16px; }
+.article-header h1 {
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+.article-dek {
+  margin-top: 18px;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+article.article-body {
+  max-width: 700px;
+  padding: 40px 0 70px;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+article.article-body h2 {
+  margin-top: 46px;
+  margin-bottom: 18px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--text-primary);
+}
+article.article-body h2:first-child { margin-top: 0; }
+article.article-body p { margin-top: 18px; }
+article.article-body p:first-child { margin-top: 0; }
+article.article-body ul,
+article.article-body ol {
+  margin-top: 18px;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+article.article-body li { line-height: 1.65; }
+article.article-body strong { color: var(--text-primary); font-weight: 650; }
+article.article-body blockquote {
+  margin: 30px 0;
+  padding: 4px 0 4px 22px;
+  border-left: 2px solid var(--accent);
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+.article-cta {
+  max-width: 700px;
+  margin: 10px 0 80px;
+  padding: 30px 32px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.article-cta p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  max-width: 380px;
+}
+
+.article-nav {
+  max-width: 700px;
+  padding-bottom: 90px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border-soft);
+  padding-top: 30px;
+}
+.article-nav a {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  transition: color var(--dur-fast) var(--ease);
+}
+.article-nav a:hover { color: var(--accent-soft); }
+.article-nav .article-nav-label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+@media (max-width: 620px) {
+  .article-cta { flex-direction: column; align-items: flex-start; }
+}

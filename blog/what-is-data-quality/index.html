@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Data Quality Actually Means | Chandraprakash Jha</title>
+<meta name="description" content="Most definitions of data quality are a checklist of adjectives. A more useful way to think about it: data quality is whatever makes a dataset safe to make a decision on.">
+<meta name="author" content="Chandraprakash Jha">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://chandraprakash.tech/blog/what-is-data-quality/">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="What Data Quality Actually Means">
+<meta property="og:description" content="Most definitions of data quality are a checklist of adjectives. Here's a more useful way to think about it.">
+<meta property="og:url" content="https://chandraprakash.tech/blog/what-is-data-quality/">
+<meta property="og:image" content="/assets/og-image.jpg">
+<meta property="og:site_name" content="Chandraprakash Jha">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="What Data Quality Actually Means">
+<meta name="twitter:description" content="Most definitions of data quality are a checklist of adjectives. Here's a more useful way to think about it.">
+<meta name="twitter:image" content="/assets/og-image.jpg">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0d13'/%3E%3Ccircle cx='9' cy='11' r='2.4' fill='%234f7cff'/%3E%3Ccircle cx='23' cy='9' r='2.4' fill='%232dd4bf'/%3E%3Ccircle cx='16' cy='22' r='2.4' fill='%234f7cff'/%3E%3Cpath d='M9 11L23 9M9 11L16 22M23 9L16 22' stroke='%233a4356' stroke-width='1.3'/%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/blog.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "What Data Quality Actually Means",
+  "description": "Most definitions of data quality are a checklist of adjectives. A more useful way to think about it: data quality is whatever makes a dataset safe to make a decision on.",
+  "author": { "@type": "Person", "name": "Chandraprakash Jha", "url": "https://chandraprakash.tech/" },
+  "datePublished": "2026-08-16",
+  "dateModified": "2026-08-16",
+  "url": "https://chandraprakash.tech/blog/what-is-data-quality/",
+  "mainEntityOfPage": "https://chandraprakash.tech/blog/what-is-data-quality/"
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a href="/" class="nav-logo">Chandraprakash<span class="accent-text">.</span></a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <li><a href="/#home" class="nav-link">Home</a></li>
+      <li><a href="/#what-i-do" class="nav-link">Expertise</a></li>
+      <li><a href="/#experience" class="nav-link">Experience</a></li>
+      <li><a href="/#approach" class="nav-link">Approach</a></li>
+      <li><a href="/blog/" class="nav-link">Writing</a></li>
+      <li><a href="/#contact" class="nav-link nav-cta">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container blog-crumb"><a href="/blog/">&larr; Writing</a></div>
+
+  <div class="container article-header">
+    <p class="post-card-meta">Data Quality</p>
+    <h1>What Data Quality Actually Means</h1>
+    <p class="article-dek">Most definitions of data quality are a checklist of adjectives. Here's a more useful way to think about it.</p>
+  </div>
+
+  <div class="container">
+    <article class="article-body">
+      <p>Ask five people to define data quality and you'll get some version of the same list: accurate, complete, consistent, timely, valid, unique. It's not wrong. It's just not that useful on its own, because it doesn't tell you what to do when a dataset fails one of those checks but the business still needs an answer today.</p>
+
+      <p>Here's a definition that's actually held up for me across every domain I've worked in: <strong>data quality is whatever makes a dataset safe to make a decision on.</strong> That's it. Not perfect. Not complete in some abstract sense. Safe to act on, for the specific decision someone is trying to make.</p>
+
+      <p>That reframing matters because it makes quality contextual instead of absolute. A customer dataset missing phone numbers might be perfectly fine for a revenue report and completely unusable for a support team trying to call people back. Same data, two very different quality bars. Chasing one universal standard of "clean data" across an entire organization is usually the wrong goal. The right question is always: clean enough for what?</p>
+
+      <h2>The dimensions still matter, just not as a checklist</h2>
+
+      <p>The standard dimensions of data quality are useful once you treat them as diagnostic tools rather than a certification to pass:</p>
+
+      <ul>
+        <li><strong>Accuracy.</strong> Does the data reflect reality? A customer's address that's outdated by two years is accurate in the sense that it exists, but not in the sense that matters.</li>
+        <li><strong>Completeness.</strong> Are the fields you need actually populated? Missing values aren't automatically a problem; missing values in the field a downstream decision depends on are.</li>
+        <li><strong>Consistency.</strong> Does the same fact agree with itself across systems? This is where "the same customer exists in three systems with three different values" lives.</li>
+        <li><strong>Timeliness.</strong> Is the data current enough for the decision being made on it? A dashboard refreshed nightly is fine for a monthly business review and useless for fraud detection.</li>
+        <li><strong>Validity.</strong> Does the data conform to the format and rules it's supposed to? A phone number field with a date in it fails validity even if every other check passes.</li>
+        <li><strong>Uniqueness.</strong> Is each real-world entity represented once? Duplicate records quietly inflate counts and split a single customer's history into fragments.</li>
+      </ul>
+
+      <p>None of these matter in isolation. What matters is which of them actually affects the decision someone is trying to make with the data in front of them.</p>
+
+      <h2>Quality is not a one-time cleanup</h2>
+
+      <p>The most common mistake I see is treating data quality as a project with an end date: run a cleanup, fix the duplicates, close the ticket. It works for exactly as long as nothing upstream changes. Then a source system adds a field, a team changes how they enter data, a new integration goes live, and the same problems come back, usually discovered by whoever's building the next report.</p>
+
+      <p>Quality that holds up is built into the pipeline, not bolted on afterward. That means validation at the point data enters a system, checks that run continuously rather than on demand, and clear ownership so that when something drifts, someone is actually responsible for catching it before it reaches a report.</p>
+
+      <p>That's the difference between cleaning data and engineering for quality. One is a task. The other is a property of how the whole pipeline is built, from ingestion through to the report someone reads.</p>
+    </article>
+
+    <div class="article-cta">
+      <p>This is the thinking behind how I approach every data pipeline I build.</p>
+      <a href="/#approach" class="btn btn-primary">See My Approach</a>
+    </div>
+
+    <nav class="article-nav" aria-label="More articles">
+      <a href="/blog/data-quality-vs-data-governance/">
+        <span class="article-nav-label">Next</span>
+        Data Quality vs Data Governance
+      </a>
+      <a href="/blog/">
+        <span class="article-nav-label">All Writing</span>
+        Back to index
+      </a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <strong>Chandraprakash Jha</strong>
+      <span>Data Engineering &bull; Data Quality &bull; Data Governance</span>
+    </div>
+    <p class="footer-copy">&copy; 2026 Chandraprakash Jha</p>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
+</html>
