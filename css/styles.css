@@ -720,6 +720,154 @@ svg { display: block; }
 }
 
 /* ==========================================================================
+   Data Trust Score widget
+   ========================================================================== */
+.trust-score { background: var(--bg-1); border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft); }
+.ts-widget {
+  margin-top: 48px;
+  max-width: 640px;
+  padding: 36px 38px 34px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+.ts-progress {
+  height: 3px;
+  border-radius: 999px;
+  background: var(--border-soft);
+  overflow: hidden;
+}
+.ts-progress-bar {
+  display: block;
+  height: 100%;
+  width: 12.5%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--teal));
+  transition: width var(--dur-med) var(--ease);
+}
+.ts-step-count {
+  margin-top: 14px;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.ts-question legend {
+  margin-top: 22px;
+  font-size: 1.15rem;
+  font-weight: 650;
+  color: var(--text-primary);
+  line-height: 1.4;
+  padding: 0;
+}
+.ts-question[hidden] { display: none; }
+.ts-options {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ts-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  cursor: pointer;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.ts-option:hover { border-color: var(--accent-soft); color: var(--text-primary); }
+.ts-option input {
+  width: 17px; height: 17px;
+  flex-shrink: 0;
+  accent-color: var(--accent);
+}
+.ts-option:has(input:checked) {
+  border-color: var(--accent-soft);
+  background: var(--accent-dim);
+  color: var(--text-primary);
+}
+.ts-nav {
+  margin-top: 28px;
+  display: flex;
+  justify-content: flex-start;
+}
+.ts-nav .btn { padding: 11px 22px; font-size: 0.88rem; }
+.ts-nav .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.ts-result-label {
+  margin-top: 6px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.ts-score-row {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.ts-score-number {
+  font-size: 1.6rem;
+  font-weight: 750;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+.ts-score-max { font-size: 1rem; color: var(--text-muted); font-weight: 500; }
+.ts-meter {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--bg-1);
+  border: 1px solid var(--border-soft);
+  overflow: hidden;
+}
+.ts-meter-fill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--teal));
+  transition: width 0.9s var(--ease);
+}
+.ts-result-message {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.ts-result-actions {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.ts-retake {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 0;
+}
+.ts-retake:hover { color: var(--text-secondary); }
+
+@media (max-width: 620px) {
+  .ts-widget { padding: 28px 22px 26px; }
+  .ts-score-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .ts-meter { width: 100%; }
+}
+
+/* ==========================================================================
    Technical expertise
    ========================================================================== */
 .expertise-grid {

@@ -348,6 +348,111 @@
     </div>
   </section>
 
+  <!-- ============ DATA TRUST SCORE ============ -->
+  <section id="trust-score" class="section trust-score">
+    <div class="container">
+      <p class="section-eyebrow" data-animate="fade-up">Quick Assessment</p>
+      <h2 class="section-heading" data-animate="fade-up">What's Your Data Trust Score?</h2>
+      <p class="section-lead" data-animate="fade-up">Eight quick questions about how your data actually behaves day to day. An illustrative self-check, not a formal audit, just a fast way to see where trust is leaking.</p>
+
+      <div class="ts-widget" data-animate="fade-up" id="tsWidget">
+        <div class="ts-progress" aria-hidden="true"><span class="ts-progress-bar" id="tsProgressBar"></span></div>
+        <p class="ts-step-count" id="tsStepCount" aria-live="polite">Question 1 of 8</p>
+
+        <div class="ts-questions" id="tsQuestions">
+          <fieldset class="ts-question" data-index="0">
+            <legend>The same customer or record ever shows up differently across systems?</legend>
+            <div class="ts-options">
+              <label class="ts-option"><input type="radio" name="q0" value="0"><span>Yes, and we don't have a way to catch it.</span></label>
+              <label class="ts-option"><input type="radio" name="q0" value="1"><span>Yes, but we usually catch it after someone notices.</span></label>
+              <label class="ts-option"><input type="radio" name="q0" value="2"><span>Rarely, we have matching logic in place.</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="ts-question" data-index="1" hidden>
+            <legend>When a data source arrives late or incomplete, what happens?</legend>
+            <div class="ts-options">
+              <label class="ts-option"><input type="radio" name="q1" value="0"><span>Nobody knows until a report looks wrong.</span></label>
+              <label class="ts-option"><input type="radio" name="q1" value="1"><span>Someone notices manually and chases it down.</span></label>
+              <label class="ts-option"><input type="radio" name="q1" value="2"><span>An automated check flags it right away.</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="ts-question" data-index="2" hidden>
+            <legend>Duplicate or missing values, when are they usually caught?</legend>
+            <div class="ts-options">
+              <label class="ts-option"><input type="radio" name="q2" value="0"><span>After they've already reached a report or dashboard.</span></label>
+              <label class="ts-option"><input type="radio" name="q2" value="1"><span>During manual review, before reports go out.</span></label>
+              <label class="ts-option"><input type="radio" name="q2" value="2"><span>Automatically, before reaching downstream users.</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="ts-question" data-index="3" hidden>
+            <legend>If two dashboards show different numbers for the same metric, is it obvious which one is right?</legend>
+            <div class="ts-options">
+              <label class="ts-option"><input type="radio" name="q3" value="0"><span>No, this happens and nobody's quite sure.</span></label>
+              <label class="ts-option"><input type="radio" name="q3" value="1"><span>Someone can usually figure it out, eventually.</span></label>
+              <label class="ts-option"><input type="radio" name="q3" value="2"><span>Yes, there's a single source everyone defers to.</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="ts-question" data-index="4" hidden>
+            <legend>Does each important dataset have a clear owner?</legend>
+            <div class="ts-options">
+              <label class="ts-option"><input type="radio" name="q4" value="0"><span>Not really, ownership is informal at best.</span></label>
+              <label class="ts-option"><input type="radio" name="q4" value="1"><span>For some datasets, not all.</span></label>
+              <label class="ts-option"><input type="radio" name="q4" value="2"><span>Yes, ownership is defined and documented.</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="ts-question" data-index="5" hidden>
+            <legend>When a pipeline fails, how do you find out?</legend>
+            <div class="ts-options">
+              <label class="ts-option"><input type="radio" name="q5" value="0"><span>Someone downstream notices the output looks wrong.</span></label>
+              <label class="ts-option"><input type="radio" name="q5" value="1"><span>We check logs manually when something feels off.</span></label>
+              <label class="ts-option"><input type="radio" name="q5" value="2"><span>Monitoring alerts the team automatically.</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="ts-question" data-index="6" hidden>
+            <legend>Can you trace a number in a report back to where it came from?</legend>
+            <div class="ts-options">
+              <label class="ts-option"><input type="radio" name="q6" value="0"><span>Not easily, it would take real digging.</span></label>
+              <label class="ts-option"><input type="radio" name="q6" value="1"><span>With some effort, yes.</span></label>
+              <label class="ts-option"><input type="radio" name="q6" value="2"><span>Yes, lineage is documented and easy to follow.</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="ts-question" data-index="7" hidden>
+            <legend>Would a new hire know which dataset to trust as the source of truth?</legend>
+            <div class="ts-options">
+              <label class="ts-option"><input type="radio" name="q7" value="0"><span>No, that knowledge lives in people's heads.</span></label>
+              <label class="ts-option"><input type="radio" name="q7" value="1"><span>They'd figure it out after asking around.</span></label>
+              <label class="ts-option"><input type="radio" name="q7" value="2"><span>Yes, it's documented and clear.</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="ts-result" id="tsResult" hidden aria-live="polite">
+          <p class="ts-result-label" id="tsResultLabel">Strong Foundation</p>
+          <div class="ts-score-row">
+            <span class="ts-score-number"><span id="tsScoreValue">0</span><span class="ts-score-max">/16</span></span>
+            <div class="ts-meter" aria-hidden="true"><span class="ts-meter-fill" id="tsMeterFill"></span></div>
+          </div>
+          <p class="ts-result-message" id="tsResultMessage"></p>
+          <div class="ts-result-actions">
+            <a href="#contact" class="btn btn-primary">Talk About Closing These Gaps</a>
+            <button type="button" class="ts-retake" id="tsRetake">Retake the assessment</button>
+          </div>
+        </div>
+
+        <div class="ts-nav" id="tsNav">
+          <button type="button" class="btn btn-ghost" id="tsBack" disabled>Back</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ TECHNICAL EXPERTISE ============ -->
   <section id="skills" class="section expertise-tech">
     <div class="container">

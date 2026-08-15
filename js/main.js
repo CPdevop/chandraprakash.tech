@@ -95,6 +95,125 @@
     }
   }
 
+  /* ---------- Data Trust Score widget ---------- */
+  var tsWidget = document.getElementById("tsWidget");
+  if (tsWidget) {
+    var tsQuestions = Array.prototype.slice.call(tsWidget.querySelectorAll(".ts-question"));
+    var tsTotal = tsQuestions.length;
+    var tsAnswers = new Array(tsTotal).fill(null);
+    var tsCurrent = 0;
+
+    var tsProgressBar = document.getElementById("tsProgressBar");
+    var tsStepCount = document.getElementById("tsStepCount");
+    var tsResult = document.getElementById("tsResult");
+    var tsNav = document.getElementById("tsNav");
+    var tsBack = document.getElementById("tsBack");
+    var tsRetake = document.getElementById("tsRetake");
+
+    var tsBands = [
+      {
+        max: 7,
+        label: "Fragile Trust",
+        message: "More people are quietly double-checking this data than actually relying on it. That usually means the basics, ingestion, cleaning and validation, need attention before governance can hold up on top of them."
+      },
+      {
+        max: 11,
+        label: "Gaps Forming",
+        message: "Parts of this pipeline hold up well. Others don't, and it's often unclear which is which until something breaks. That gap is usually where quality checks and clearer ownership pay off fastest."
+      },
+      {
+        max: 16,
+        label: "Strong Foundation",
+        message: "The fundamentals are in good shape. The next step is usually formalizing governance and monitoring so this holds up as the team, sources and volume keep growing."
+      }
+    ];
+
+    function tsShowQuestion(index) {
+      tsQuestions.forEach(function (q, i) {
+        q.hidden = i !== index;
+      });
+      tsResult.hidden = true;
+      tsNav.hidden = false;
+      var pct = ((index + 1) / tsTotal) * 100;
+      tsProgressBar.style.width = pct + "%";
+      tsStepCount.textContent = "Question " + (index + 1) + " of " + tsTotal;
+      tsBack.disabled = index === 0;
+    }
+
+    function tsShowResult() {
+      var score = tsAnswers.reduce(function (sum, v) { return sum + (v === null ? 0 : v); }, 0);
+      var band = tsBands[tsBands.length - 1];
+      for (var i = 0; i < tsBands.length; i++) {
+        if (score <= tsBands[i].max) { band = tsBands[i]; break; }
+      }
+
+      tsQuestions.forEach(function (q) { q.hidden = true; });
+      tsNav.hidden = true;
+      tsResult.hidden = false;
+      tsProgressBar.style.width = "100%";
+      tsStepCount.textContent = "Result";
+
+      document.getElementById("tsResultLabel").textContent = band.label;
+      document.getElementById("tsResultMessage").textContent = band.message;
+
+      var scoreEl = document.getElementById("tsScoreValue");
+      var fillEl = document.getElementById("tsMeterFill");
+
+      if (reduceMotion) {
+        scoreEl.textContent = score;
+      } else {
+        var start = null;
+        var duration = 700;
+        function step(ts) {
+          if (start === null) start = ts;
+          var progress = Math.min((ts - start) / duration, 1);
+          scoreEl.textContent = Math.round(progress * score);
+          if (progress < 1) window.requestAnimationFrame(step);
+        }
+        window.requestAnimationFrame(step);
+      }
+      requestAnimationFrame(function () {
+        fillEl.style.width = (score / 16) * 100 + "%";
+      });
+    }
+
+    tsQuestions.forEach(function (q, index) {
+      q.addEventListener("change", function (e) {
+        if (e.target.type !== "radio") return;
+        tsAnswers[index] = parseInt(e.target.value, 10);
+        setTimeout(
+          function () {
+            if (index === tsTotal - 1) {
+              tsShowResult();
+            } else {
+              tsCurrent = index + 1;
+              tsShowQuestion(tsCurrent);
+            }
+          },
+          reduceMotion ? 0 : 320
+        );
+      });
+    });
+
+    tsBack.addEventListener("click", function () {
+      if (tsCurrent > 0) {
+        tsCurrent -= 1;
+        tsShowQuestion(tsCurrent);
+      }
+    });
+
+    tsRetake.addEventListener("click", function () {
+      tsAnswers = new Array(tsTotal).fill(null);
+      tsCurrent = 0;
+      tsQuestions.forEach(function (q) {
+        q.querySelectorAll("input[type=radio]").forEach(function (input) { input.checked = false; });
+      });
+      tsShowQuestion(0);
+    });
+
+    tsShowQuestion(0);
+  }
+
   /* ---------- Sticky header shadow on scroll ---------- */
   var header = document.getElementById("site-header");
   if (header) {
