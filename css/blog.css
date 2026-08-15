@@ -136,6 +136,34 @@ article.article-body blockquote {
   font-style: italic;
 }
 
+.article-byline {
+  max-width: 700px;
+  margin-top: 44px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.article-byline img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.article-byline-name {
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--text-primary);
+}
+.article-byline-role {
+  margin-top: 2px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
 .article-cta {
   max-width: 700px;
   margin: 10px 0 80px;
