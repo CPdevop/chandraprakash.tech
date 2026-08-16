@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://chandraprakash.tech/</loc>
+    <loc>https://www.chandraprakash.tech/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/</loc>
+    <loc>https://www.chandraprakash.tech/blog/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/what-is-data-quality/</loc>
+    <loc>https://www.chandraprakash.tech/blog/what-is-data-quality/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/data-quality-vs-data-governance/</loc>
+    <loc>https://www.chandraprakash.tech/blog/data-quality-vs-data-governance/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/same-customer-multiple-systems/</loc>
+    <loc>https://www.chandraprakash.tech/blog/same-customer-multiple-systems/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/silent-pipeline-failures/</loc>
+    <loc>https://www.chandraprakash.tech/blog/silent-pipeline-failures/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/data-quality-metrics/</loc>
+    <loc>https://www.chandraprakash.tech/blog/data-quality-metrics/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/automated-data-validation-setup/</loc>
+    <loc>https://www.chandraprakash.tech/blog/automated-data-validation-setup/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/data-validation-tools-compared/</loc>
+    <loc>https://www.chandraprakash.tech/blog/data-validation-tools-compared/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://chandraprakash.tech/blog/etl-testing-guide/</loc>
+    <loc>https://www.chandraprakash.tech/blog/etl-testing-guide/</loc>
     <lastmod>2026-08-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

@@ -214,6 +214,62 @@
     tsShowQuestion(0);
   }
 
+  /* ---------- Data Quality Dimensions wheel ---------- */
+  var dqWheel = document.getElementById("dqWheel");
+  if (dqWheel) {
+    var dqSvg = document.getElementById("dqWheelSvg");
+    var dqNodes = Array.prototype.slice.call(dqWheel.querySelectorAll(".dq-node"));
+
+    function layoutDqWheel() {
+      var size = dqWheel.clientWidth;
+      if (!size) return;
+      var cx = size / 2;
+      var cy = size / 2;
+      var radius = size / 2 * 0.82;
+      var n = dqNodes.length;
+      var svgLines = "";
+
+      dqNodes.forEach(function (node, i) {
+        var angle = (-90 + i * (360 / n)) * (Math.PI / 180);
+        var x = cx + radius * Math.cos(angle);
+        var y = cy + radius * Math.sin(angle);
+        node.style.left = x + "px";
+        node.style.top = y + "px";
+        svgLines += '<line x1="' + cx + '" y1="' + cy + '" x2="' + x + '" y2="' + y + '"></line>';
+      });
+
+      dqSvg.setAttribute("viewBox", "0 0 " + size + " " + size);
+      dqSvg.innerHTML = svgLines;
+    }
+
+    layoutDqWheel();
+    window.addEventListener("resize", debounce(layoutDqWheel, 150));
+
+    if ("IntersectionObserver" in window) {
+      var dqObserver = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              layoutDqWheel();
+              dqObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+      dqObserver.observe(dqWheel);
+    }
+  }
+
+  function debounce(fn, wait) {
+    var t;
+    return function () {
+      clearTimeout(t);
+      var args = arguments;
+      t = setTimeout(function () { fn.apply(null, args); }, wait);
+    };
+  }
+
   /* ---------- Sticky header shadow on scroll ---------- */
   var header = document.getElementById("site-header");
   if (header) {
