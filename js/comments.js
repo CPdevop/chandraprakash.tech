@@ -32,10 +32,16 @@
     }
     listEl.innerHTML = comments
       .map(function (c) {
+        var reaction = c.admin_reaction ? '<p class="comment-reaction">' + escapeHtml(c.admin_reaction) + "</p>" : "";
+        var reply = c.admin_reply
+          ? '<div class="comment-reply"><p class="comment-reply-label">Chandraprakash replied</p><p class="comment-reply-body">' + escapeHtml(c.admin_reply) + "</p></div>"
+          : "";
         return (
           '<article class="comment-item">' +
           '<p class="comment-meta"><span class="comment-name">' + escapeHtml(c.name) + "</span> &middot; " + formatDate(c.created_at) + "</p>" +
           '<p class="comment-body">' + escapeHtml(c.body) + "</p>" +
+          reaction +
+          reply +
           "</article>"
         );
       })

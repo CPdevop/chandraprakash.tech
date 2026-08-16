@@ -20,7 +20,7 @@ async function handleGet(req, res) {
 
   try {
     const rows = await sql`
-      SELECT id, name, body, created_at
+      SELECT id, name, body, created_at, admin_reply, admin_reply_at, admin_reaction
       FROM comments
       WHERE post_slug = ${slug} AND status = 'approved'
       ORDER BY created_at ASC

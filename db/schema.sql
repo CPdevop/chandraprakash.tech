@@ -2,17 +2,25 @@
 -- Run once via `npm run db:migrate` (reads DATABASE_URL from .env)
 
 CREATE TABLE IF NOT EXISTS comments (
-  id            SERIAL PRIMARY KEY,
-  post_slug     TEXT NOT NULL,
-  name          TEXT NOT NULL,
-  email         TEXT NOT NULL,
-  body          TEXT NOT NULL,
-  status        TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
-  ip_address    TEXT,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+  id              SERIAL PRIMARY KEY,
+  post_slug       TEXT NOT NULL,
+  name            TEXT NOT NULL,
+  email           TEXT NOT NULL,
+  body            TEXT NOT NULL,
+  status          TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+  admin_reply     TEXT,
+  admin_reply_at  TIMESTAMPTZ,
+  admin_reaction  TEXT,
+  ip_address      TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS idx_comments_slug_status ON comments (post_slug, status);
 CREATE INDEX IF NOT EXISTS idx_comments_ip_created ON comments (ip_address, created_at);
+
+-- Safe to re-run against an existing table created before these columns existed
+ALTER TABLE comments ADD COLUMN IF NOT EXISTS admin_reply TEXT;
+ALTER TABLE comments ADD COLUMN IF NOT EXISTS admin_reply_at TIMESTAMPTZ;
+ALTER TABLE comments ADD COLUMN IF NOT EXISTS admin_reaction TEXT;
 
 CREATE TABLE IF NOT EXISTS questions (
   id            SERIAL PRIMARY KEY,
@@ -59,3 +67,15 @@ CREATE TABLE IF NOT EXISTS inquiries (
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS idx_inquiries_ip_created ON inquiries (ip_address, created_at);
+
+-- One emoji reaction per visitor (by IP) per post. Clicking an already-set
+-- reaction removes it (toggle), so this also acts as the "undo" record.
+CREATE TABLE IF NOT EXISTS post_reactions (
+  id            SERIAL PRIMARY KEY,
+  post_slug     TEXT NOT NULL,
+  emoji         TEXT NOT NULL,
+  ip_address    TEXT NOT NULL,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (post_slug, emoji, ip_address)
+);
+CREATE INDEX IF NOT EXISTS idx_post_reactions_slug ON post_reactions (post_slug);
