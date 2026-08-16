@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questions &amp; Answers | Chandraprakash Jha</title>
+<meta name="description" content="Ask a question about data quality, data engineering or data governance. Answered questions build into a growing, practical FAQ.">
+<meta name="author" content="Chandraprakash Jha">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.chandraprakash.tech/questions/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Questions & Answers">
+<meta property="og:description" content="Ask a question about data quality, data engineering or data governance.">
+<meta property="og:url" content="https://www.chandraprakash.tech/questions/">
+<meta property="og:image" content="https://www.chandraprakash.tech/assets/og-image.jpg">
+<meta property="og:site_name" content="Chandraprakash Jha">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Questions & Answers">
+<meta name="twitter:image" content="https://www.chandraprakash.tech/assets/og-image.jpg">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0d13'/%3E%3Ccircle cx='9' cy='11' r='2.4' fill='%234f7cff'/%3E%3Ccircle cx='23' cy='9' r='2.4' fill='%232dd4bf'/%3E%3Ccircle cx='16' cy='22' r='2.4' fill='%234f7cff'/%3E%3Cpath d='M9 11L23 9M9 11L16 22M23 9L16 22' stroke='%233a4356' stroke-width='1.3'/%3E%3C/svg%3E">
+
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/blog.css">
+<style>
+  .qa-list { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
+  .qa-item { padding: 22px 24px; border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--surface); }
+  .qa-question { font-size: 1.02rem; font-weight: 700; color: var(--text-primary); }
+  .qa-question::before { content: "Q. "; color: var(--teal); }
+  .qa-answer { margin-top: 10px; font-size: 0.94rem; color: var(--text-secondary); line-height: 1.65; white-space: pre-wrap; }
+  .qa-answer::before { content: "A. "; color: var(--accent-soft); font-weight: 700; }
+  .qa-meta { margin-top: 12px; font-size: 0.76rem; color: var(--text-muted); }
+  .qa-empty { color: var(--text-muted); font-size: 0.92rem; }
+  .qa-ask { max-width: 700px; margin-top: 70px; padding-top: 36px; border-top: 1px solid var(--border-soft); }
+  .qa-ask h2 { font-size: 1.2rem; font-weight: 700; }
+  .qa-ask p.qa-ask-lead { margin-top: 8px; color: var(--text-secondary); font-size: 0.94rem; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="site-header">
+  <nav class="nav container" aria-label="Primary">
+    <a href="/" class="nav-logo">Chandraprakash<span class="accent-text">.</span></a>
+    <div class="nav-right">
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/#home" class="nav-link">Home</a></li>
+        <li><a href="/#what-i-do" class="nav-link">Expertise</a></li>
+        <li><a href="/#experience" class="nav-link">Experience</a></li>
+        <li><a href="/#approach" class="nav-link">Approach</a></li>
+        <li><a href="/blog/" class="nav-link">Writing</a></li>
+        <li><a href="/#contact" class="nav-link nav-cta">Contact</a></li>
+      </ul>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
+        <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path class="candle-flame" d="M12 3.6c-1.4 2-1.9 3.4-1 4.5.4.5 1.6.5 2 0 .9-1.1.4-2.5-1-4.5z"></path>
+          <rect class="candle-body" x="9" y="10" width="6" height="10.5" rx="1.3"></rect>
+          <path class="candle-wick" d="M12 10V7.4"></path>
+          <g class="match">
+            <line x1="5" y1="20.5" x2="9.5" y2="15.5"></line>
+            <circle class="match-head" cx="5" cy="20.5" r="1.2"></circle>
+          </g>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <div class="container blog-hero">
+    <h1>Questions &amp; Answers</h1>
+    <p>Ask something specific about data quality, data engineering or data governance. Answered questions stay here and build into a practical, growing FAQ.</p>
+  </div>
+
+  <div class="container">
+    <div class="qa-list" id="qaList">
+      <p class="qa-empty">Loading questions...</p>
+    </div>
+
+    <div class="qa-ask">
+      <h2>Ask a Question</h2>
+      <p class="qa-ask-lead">Answered publicly here, usually within a few days. Your email is never published.</p>
+      <form class="comment-form" id="questionForm">
+        <div class="cf-row">
+          <input type="text" name="name" placeholder="Name" required maxlength="100">
+          <input type="email" name="email" placeholder="Email (not published)" required maxlength="254">
+        </div>
+        <textarea name="question" placeholder="What do you want to ask?" required maxlength="1000"></textarea>
+        <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="btn btn-primary">Submit Question</button>
+        <p class="comment-status" id="questionStatus" hidden></p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <strong>Chandraprakash Jha</strong>
+      <span>Data Engineering &bull; Data Quality &bull; Data Governance</span>
+    </div>
+    <a href="https://www.linkedin.com/in/chandraprakash-jha" target="_blank" rel="noopener noreferrer" class="footer-linkedin">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 10v6M7.5 7.5v.01M12 16v-3.5c0-1.4 1-2.5 2.3-2.5S17 11.1 17 12.5V16"/></svg>
+      LinkedIn
+    </a>
+    <p class="footer-copy">&copy; 2026 Chandraprakash Jha</p>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+<script>
+(function () {
+  "use strict";
+  var listEl = document.getElementById("qaList");
+  var form = document.getElementById("questionForm");
+  var statusEl = document.getElementById("questionStatus");
+
+  function escapeHtml(str) {
+    var div = document.createElement("div");
+    div.textContent = str == null ? "" : String(str);
+    return div.innerHTML;
+  }
+  function formatDate(iso) {
+    try { return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch (e) { return ""; }
+  }
+
+  function render(items) {
+    if (!items.length) {
+      listEl.innerHTML = '<p class="qa-empty">No questions answered yet — be the first to ask.</p>';
+      return;
+    }
+    listEl.innerHTML = items.map(function (q) {
+      return '<article class="qa-item">' +
+        '<p class="qa-question">' + escapeHtml(q.question) + '</p>' +
+        '<p class="qa-answer">' + escapeHtml(q.answer) + '</p>' +
+        '<p class="qa-meta">Asked by ' + escapeHtml(q.name) + ' &middot; answered ' + formatDate(q.answered_at) + '</p>' +
+        '</article>';
+    }).join("");
+  }
+
+  fetch("/api/questions").then(function (r) { return r.json(); }).then(function (data) {
+    render(data.questions || []);
+  }).catch(function () {
+    listEl.innerHTML = '<p class="qa-empty">Couldn\'t load questions right now.</p>';
+  });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var formData = new FormData(form);
+    var payload = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      question: formData.get("question"),
+      website: formData.get("website")
+    };
+    var submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
+    fetch("/api/questions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+      .then(function (result) {
+        submitBtn.disabled = false;
+        statusEl.hidden = false;
+        statusEl.classList.toggle("is-error", !result.ok);
+        statusEl.textContent = result.ok ? (result.data.message || "Thanks!") : (result.data.error || "Something went wrong.");
+        if (result.ok) form.reset();
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        statusEl.hidden = false;
+        statusEl.classList.add("is-error");
+        statusEl.textContent = "Something went wrong. Please try again.";
+      });
+  });
+})();
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>

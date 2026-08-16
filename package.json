@@ -1,0 +1,15 @@
+{
+  "name": "chandraprakash-tech",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal site backend (comments, Q&A, and future ebook downloads) for chandraprakash.tech",
+  "scripts": {
+    "db:migrate": "node scripts/migrate.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5"
+  }
+}

@@ -132,6 +132,21 @@
         Back to index
       </a>
     </nav>
+
+    <section class="comments-section" id="comments" data-slug="data-quality-vs-data-governance">
+      <h2>Comments <span class="comments-count" id="commentsCount"></span></h2>
+      <div class="comments-list" id="commentsList"><p class="comments-empty">Loading comments...</p></div>
+      <form class="comment-form" id="commentForm">
+        <div class="cf-row">
+          <input type="text" name="name" placeholder="Name" required maxlength="100">
+          <input type="email" name="email" placeholder="Email (not published)" required maxlength="254">
+        </div>
+        <textarea name="body" placeholder="Add a comment..." required maxlength="2000"></textarea>
+        <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="btn btn-primary">Post Comment</button>
+        <p class="comment-status" id="commentStatus" hidden></p>
+      </form>
+    </section>
   </div>
 </main>
 
@@ -146,6 +161,7 @@
 </footer>
 
 <script src="/js/main.js"></script>
+<script src="/js/comments.js"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
