@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>(function(){try{if(localStorage.getItem('theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>What Data Quality Actually Means | Chandraprakash Jha</title>
 <meta name="description" content="Most definitions of data quality are a checklist of adjectives. A more useful way to think about it: data quality is whatever makes a dataset safe to make a decision on.">
@@ -47,17 +48,30 @@
 <header class="site-header" id="site-header">
   <nav class="nav container" aria-label="Primary">
     <a href="/" class="nav-logo">Chandraprakash<span class="accent-text">.</span></a>
-    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
-      <span></span><span></span><span></span>
-    </button>
-    <ul class="nav-menu" id="navMenu">
-      <li><a href="/#home" class="nav-link">Home</a></li>
-      <li><a href="/#what-i-do" class="nav-link">Expertise</a></li>
-      <li><a href="/#experience" class="nav-link">Experience</a></li>
-      <li><a href="/#approach" class="nav-link">Approach</a></li>
-      <li><a href="/blog/" class="nav-link">Writing</a></li>
-      <li><a href="/#contact" class="nav-link nav-cta">Contact</a></li>
-    </ul>
+    <div class="nav-right">
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="/#home" class="nav-link">Home</a></li>
+        <li><a href="/#what-i-do" class="nav-link">Expertise</a></li>
+        <li><a href="/#experience" class="nav-link">Experience</a></li>
+        <li><a href="/#approach" class="nav-link">Approach</a></li>
+        <li><a href="/blog/" class="nav-link">Writing</a></li>
+        <li><a href="/#contact" class="nav-link nav-cta">Contact</a></li>
+      </ul>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false">
+        <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path class="candle-flame" d="M12 3.6c-1.4 2-1.9 3.4-1 4.5.4.5 1.6.5 2 0 .9-1.1.4-2.5-1-4.5z"></path>
+          <rect class="candle-body" x="9" y="10" width="6" height="10.5" rx="1.3"></rect>
+          <path class="candle-wick" d="M12 10V7.4"></path>
+          <g class="match">
+            <line x1="5" y1="20.5" x2="9.5" y2="15.5"></line>
+            <circle class="match-head" cx="5" cy="20.5" r="1.2"></circle>
+          </g>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </nav>
 </header>
 

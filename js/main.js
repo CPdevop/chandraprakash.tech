@@ -3,6 +3,30 @@
 
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ---------- Theme toggle (candle + match) ---------- */
+  var themeToggle = document.getElementById("themeToggle");
+  if (themeToggle) {
+    var root = document.documentElement;
+
+    function setToggleLabel(isLight) {
+      themeToggle.setAttribute("aria-pressed", isLight ? "true" : "false");
+      themeToggle.setAttribute("aria-label", isLight ? "Switch to dark mode" : "Switch to light mode");
+    }
+    setToggleLabel(root.getAttribute("data-theme") === "light");
+
+    themeToggle.addEventListener("click", function () {
+      var isLight = root.getAttribute("data-theme") === "light";
+      if (isLight) {
+        root.removeAttribute("data-theme");
+        try { localStorage.setItem("theme", "dark"); } catch (e) {}
+      } else {
+        root.setAttribute("data-theme", "light");
+        try { localStorage.setItem("theme", "light"); } catch (e) {}
+      }
+      setToggleLabel(!isLight);
+    });
+  }
+
   /* ---------- Mobile nav toggle ---------- */
   var navToggle = document.getElementById("navToggle");
   var navMenu = document.getElementById("navMenu");

@@ -38,6 +38,35 @@
   --dur-fast: 0.2s;
   --dur-med: 0.5s;
   --dur-slow: 0.9s;
+
+  --header-bg: rgba(6, 8, 16, 0.72);
+  --grid-line: rgba(255, 255, 255, 0.035);
+}
+
+/* Light theme — explicit toggle only, dark is the default identity */
+:root[data-theme="light"] {
+  --bg-0: #f7f8fb;
+  --bg-1: #eef0f6;
+  --bg-2: #e6e9f1;
+  --surface: #ffffff;
+  --surface-hover: #f4f5fa;
+  --border: #dde1ea;
+  --border-soft: #e8eaf1;
+
+  --text-primary: #12151f;
+  --text-secondary: #4a5268;
+  --text-muted: #6d7690;
+
+  --accent: #3457d5;
+  --accent-soft: #2f56d1;
+  --accent-dim: rgba(52, 87, 213, 0.08);
+  --teal: #0d9488;
+  --teal-dim: rgba(13, 148, 136, 0.08);
+  --good: #15803d;
+  --warn: #b45309;
+
+  --header-bg: rgba(247, 248, 251, 0.78);
+  --grid-line: rgba(18, 21, 31, 0.045);
 }
 
 /* ---------- Reset ---------- */
@@ -52,6 +81,7 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 img { max-width: 100%; display: block; }
 ul { margin: 0; padding: 0; list-style: none; }
@@ -160,7 +190,7 @@ svg { display: block; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(6, 8, 16, 0.72);
+  background: var(--header-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-soft);
@@ -170,6 +200,11 @@ svg { display: block; }
   align-items: center;
   justify-content: space-between;
   height: 68px;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 .nav-logo {
   font-weight: 700;
@@ -206,6 +241,71 @@ svg { display: block; }
 }
 .nav-cta:hover { border-color: var(--accent-soft); background: var(--accent-dim); }
 
+/* Theme toggle: candle + match */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.theme-toggle:hover { border-color: var(--accent-soft); transform: translateY(-1px); }
+.theme-icon {
+  width: 19px;
+  height: 19px;
+  overflow: visible;
+}
+.theme-icon .candle-body {
+  fill: none;
+  stroke: var(--text-secondary);
+  stroke-width: 1.5;
+}
+.theme-icon .candle-wick {
+  stroke: var(--text-secondary);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+.theme-icon .candle-flame {
+  fill: var(--warn);
+  stroke: none;
+  opacity: 0;
+  transform: scale(0.4);
+  transform-origin: 12px 7.5px;
+  transition: opacity var(--dur-med) var(--ease), transform var(--dur-med) var(--ease), filter var(--dur-med) var(--ease);
+}
+.theme-icon .match {
+  stroke: var(--text-muted);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  transition: opacity var(--dur-med) var(--ease), transform var(--dur-med) var(--ease);
+  transform-origin: 4px 20px;
+}
+.theme-icon .match-head {
+  fill: var(--text-muted);
+  stroke: none;
+  transition: fill var(--dur-med) var(--ease);
+}
+
+:root[data-theme="light"] .theme-icon .candle-flame {
+  opacity: 1;
+  transform: scale(1);
+  filter: drop-shadow(0 0 3px rgba(180, 83, 9, 0.55));
+}
+:root[data-theme="light"] .theme-icon .match {
+  opacity: 0;
+  transform: rotate(-18deg) translate(-2px, 2px);
+}
+:root[data-theme="light"] .theme-toggle:hover .theme-icon .candle-flame {
+  transform: scale(1.08) rotate(-2deg);
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -237,8 +337,8 @@ svg { display: block; }
 .grid-layer {
   position: absolute; inset: -10% -10%;
   background-image:
-    linear-gradient(to right, rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.035) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 42px 42px;
   mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 75%);
   animation: gridDrift 40s linear infinite;
