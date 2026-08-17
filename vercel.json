@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/blog/:slug", "destination": "/api/article?slug=:slug" },
+    { "source": "/blog/:slug/", "destination": "/api/article?slug=:slug" },
+    { "source": "/work/:slug", "destination": "/api/portfolio-item?slug=:slug" },
+    { "source": "/work/:slug/", "destination": "/api/portfolio-item?slug=:slug" }
+  ]
+}

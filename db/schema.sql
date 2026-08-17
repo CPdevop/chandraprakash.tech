@@ -79,3 +79,38 @@ CREATE TABLE IF NOT EXISTS post_reactions (
   UNIQUE (post_slug, emoji, ip_address)
 );
 CREATE INDEX IF NOT EXISTS idx_post_reactions_slug ON post_reactions (post_slug);
+
+-- CMS: articles (replaces hand-authored HTML for anything created from now on;
+-- the 8 existing static articles are untouched and keep living as files)
+CREATE TABLE IF NOT EXISTS articles (
+  id              SERIAL PRIMARY KEY,
+  slug            TEXT UNIQUE NOT NULL,
+  title           TEXT NOT NULL,
+  dek             TEXT,
+  category        TEXT,
+  body_markdown   TEXT NOT NULL DEFAULT '',
+  cover_image_url TEXT,
+  status          TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  published_at    TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS idx_articles_status ON articles (status, published_at);
+
+-- CMS: portfolio / selected work case studies
+CREATE TABLE IF NOT EXISTS portfolio_items (
+  id              SERIAL PRIMARY KEY,
+  slug            TEXT UNIQUE NOT NULL,
+  title           TEXT NOT NULL,
+  category        TEXT,
+  summary         TEXT,
+  body_markdown   TEXT NOT NULL DEFAULT '',
+  tech_tags       TEXT,
+  github_url      TEXT,
+  cover_image_url TEXT,
+  status          TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  published_at    TIMESTAMPTZ
+);
+CREATE INDEX IF NOT EXISTS idx_portfolio_status ON portfolio_items (status, published_at);

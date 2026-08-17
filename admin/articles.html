@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Articles | Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+
+<div id="gate" class="gate">
+  <h1>Admin</h1>
+  <p>Enter the admin token to continue.</p>
+  <input type="password" id="tokenInput" placeholder="Admin token" autocomplete="off">
+  <button class="btn btn-primary" id="unlockBtn">Unlock</button>
+  <p class="save-status is-error" id="gateError" hidden></p>
+</div>
+
+<div id="shellRoot" class="admin-shell" hidden>
+  <div id="sidebarMount"></div>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <h1>Articles</h1>
+        <p>Everything you've written, drafts included.</p>
+      </div>
+      <a href="/admin/edit-article.html" class="btn btn-primary">+ New Article</a>
+    </div>
+
+    <div style="overflow-x:auto;">
+      <table class="admin-table">
+        <thead>
+          <tr><th>Title</th><th>Category</th><th>Status</th><th>Updated</th><th></th></tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="empty-note" id="emptyNote" hidden style="margin-top:16px;">No articles yet. Create your first one.</p>
+  </main>
+</div>
+
+<script src="/js/admin-shell.js"></script>
+<script>
+(function () {
+  "use strict";
+  var authFetch = AdminShell.authFetch;
+  var escapeHtml = AdminShell.escapeHtml;
+  var shell;
+
+  function formatDate(iso) { try { return new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }); } catch (e) { return iso; } }
+
+  function render(articles) {
+    var rowsEl = document.getElementById("rows");
+    document.getElementById("emptyNote").hidden = articles.length > 0;
+    rowsEl.innerHTML = articles.map(function (a) {
+      return "<tr>" +
+        '<td><div class="title-cell">' + escapeHtml(a.title) + '</div><div class="slug-cell">/blog/' + escapeHtml(a.slug) + '/</div></td>' +
+        "<td>" + escapeHtml(a.category || "—") + "</td>" +
+        '<td><span class="status-pill ' + a.status + '">' + a.status + "</span></td>" +
+        "<td>" + formatDate(a.updated_at) + "</td>" +
+        '<td><div class="row-actions">' +
+          '<a href="/admin/edit-article.html?id=' + a.id + '">Edit</a>' +
+          (a.status === "published" ? '<a href="/blog/' + escapeHtml(a.slug) + '/" target="_blank" rel="noopener">View</a>' : "") +
+          '<button class="danger" data-delete="' + a.id + '" data-title="' + escapeHtml(a.title) + '">Delete</button>' +
+        "</div></td>" +
+      "</tr>";
+    }).join("");
+  }
+
+  function load() {
+    authFetch("/api/admin/articles").then(function (r) {
+      if (r.status === 401) { shell.showGate("That token isn't right."); return null; }
+      return r.json();
+    }).then(function (data) {
+      if (data) render(data.articles || []);
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-delete]");
+    if (!btn) return;
+    if (!confirm('Delete "' + btn.getAttribute("data-title") + '"? This can\'t be undone.')) return;
+    authFetch("/api/admin/article?id=" + btn.getAttribute("data-delete"), { method: "DELETE" }).then(load);
+  });
+
+  shell = AdminShell.init("articles", load);
+})();
+</script>
+
+</body>
+</html>

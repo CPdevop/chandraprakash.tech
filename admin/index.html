@@ -3,155 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin | Chandraprakash Jha</title>
+<title>Dashboard | Admin</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="/css/styles.css">
-<style>
-  body { padding: 40px 24px 100px; }
-  .admin-wrap { max-width: 900px; margin: 0 auto; }
-  .admin-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 36px; }
-  .admin-header h1 { font-size: 1.5rem; font-weight: 700; }
-  .gate { max-width: 380px; margin: 80px auto; text-align: center; }
-  .gate input { width: 100%; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text-primary); font-size: 0.95rem; margin-top: 16px; }
-  .gate button, .logout-btn { margin-top: 16px; }
-  [hidden] { display: none !important; }
-  .queue-section { margin-bottom: 48px; }
-  .queue-section h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border-soft); }
-  .queue-item { padding: 18px 20px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); margin-bottom: 12px; }
-  .queue-item-meta { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px; }
-  .queue-item-body { font-size: 0.94rem; color: var(--text-primary); line-height: 1.6; white-space: pre-wrap; }
-  .queue-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; align-items: center; }
-  .queue-actions button { font-size: 0.82rem; padding: 7px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--bg-1); color: var(--text-primary); cursor: pointer; }
-  .queue-actions button.approve:hover { border-color: var(--good); color: var(--good); }
-  .queue-actions button.reject:hover { border-color: #e05252; color: #e05252; }
-  .queue-actions button.save:hover { border-color: var(--accent-soft); color: var(--accent-soft); }
-  .answer-box { width: 100%; margin-top: 10px; padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-1); color: var(--text-primary); font-family: inherit; font-size: 0.9rem; min-height: 70px; box-sizing: border-box; }
-  .empty-note { color: var(--text-muted); font-size: 0.88rem; }
-  .status-msg { font-size: 0.85rem; margin-top: 10px; }
-  .status-msg.error { color: #e05252; }
-
-  /* Analytics */
-  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
-  .stat-card { padding: 16px 18px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
-  .stat-card .num { font-size: 1.6rem; font-weight: 750; font-variant-numeric: tabular-nums; }
-  .stat-card .lbl { font-size: 0.76rem; color: var(--text-muted); margin-top: 2px; }
-  .analytics-row { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px; }
-  .analytics-col { flex: 1; min-width: 220px; }
-  .analytics-col h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px; }
-  .bar-row { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; margin-bottom: 8px; }
-  .bar-row .bar-label { width: 130px; flex-shrink: 0; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .bar-track { flex: 1; height: 8px; border-radius: 4px; background: var(--bg-1); overflow: hidden; }
-  .bar-fill { height: 100%; background: var(--accent); border-radius: 4px; }
-  .bar-count { width: 30px; text-align: right; color: var(--text-muted); font-variant-numeric: tabular-nums; }
-  .sparkline { display: flex; align-items: flex-end; gap: 3px; height: 60px; margin-top: 10px; }
-  .spark-bar { flex: 1; background: var(--accent-dim); border-radius: 2px 2px 0 0; min-height: 2px; position: relative; }
-  .spark-bar.has-activity { background: var(--accent); }
-
-  /* Emoji picker */
-  .emoji-picker { display: flex; gap: 6px; }
-  .emoji-picker button { font-size: 1rem; padding: 5px 9px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-1); cursor: pointer; }
-  .emoji-picker button.is-selected { border-color: var(--teal); background: var(--teal-dim); }
-</style>
+<link rel="stylesheet" href="/css/admin.css">
 </head>
-<body>
+<body class="admin-body">
 
-<div class="admin-wrap">
-  <div id="gate" class="gate">
-    <h1>Admin</h1>
-    <p style="color: var(--text-muted); margin-top: 8px;">Enter the admin token to view the moderation queue.</p>
-    <input type="password" id="tokenInput" placeholder="Admin token" autocomplete="off">
-    <button class="btn btn-primary" id="unlockBtn" style="width:100%;">Unlock</button>
-    <p class="status-msg error" id="gateError" hidden></p>
-  </div>
+<div id="gate" class="gate">
+  <h1>Admin</h1>
+  <p>Enter the admin token to continue.</p>
+  <input type="password" id="tokenInput" placeholder="Admin token" autocomplete="off">
+  <button class="btn btn-primary" id="unlockBtn">Unlock</button>
+  <p class="save-status is-error" id="gateError" hidden></p>
+</div>
 
-  <div id="panel" hidden>
-    <div class="admin-header">
-      <h1>Admin</h1>
-      <button class="btn btn-ghost logout-btn" id="logoutBtn">Log out</button>
+<div id="shellRoot" class="admin-shell" hidden>
+  <div id="sidebarMount"></div>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <h1>Dashboard</h1>
+        <p>Moderation queue and site analytics.</p>
+      </div>
     </div>
 
-    <section class="queue-section">
+    <section class="card-section">
       <h2>Analytics</h2>
       <div id="statGrid" class="stat-grid"></div>
-      <div id="sparkline" class="sparkline"></div>
-      <div class="analytics-row">
-        <div class="analytics-col">
-          <h3>Most Commented Articles</h3>
+      <div id="sparkline" style="display:flex;align-items:flex-end;gap:3px;height:60px;margin-top:16px;"></div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:20px;">
+        <div style="flex:1;min-width:220px;">
+          <h3 style="font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px;">Most Commented Articles</h3>
           <div id="topComments"></div>
         </div>
-        <div class="analytics-col">
-          <h3>Most Reacted-To Articles</h3>
+        <div style="flex:1;min-width:220px;">
+          <h3 style="font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px;">Most Reacted-To Articles</h3>
           <div id="topReactions"></div>
         </div>
-        <div class="analytics-col">
-          <h3>Reactions by Emoji</h3>
+        <div style="flex:1;min-width:220px;">
+          <h3 style="font-size:0.85rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px;">Reactions by Emoji</h3>
           <div id="reactionBreakdown"></div>
         </div>
       </div>
     </section>
 
-    <section class="queue-section">
+    <section class="card-section">
       <h2>Pending Comments</h2>
       <div id="commentsList"></div>
     </section>
 
-    <section class="queue-section">
+    <section class="card-section">
       <h2>Pending Questions</h2>
       <div id="questionsList"></div>
     </section>
 
-    <section class="queue-section">
+    <section class="card-section">
       <h2>Approved Comments &mdash; Reply / React</h2>
       <div id="approvedList"></div>
     </section>
 
-    <section class="queue-section">
+    <section class="card-section">
       <h2>Recent Inquiries (last 20)</h2>
       <div id="inquiriesList"></div>
     </section>
-  </div>
+  </main>
 </div>
 
+<script src="/js/admin-shell.js"></script>
 <script>
 (function () {
   "use strict";
   var EMOJI = ["👍", "❤️", "💡", "🔥", "👏"];
+  var authFetch = AdminShell.authFetch;
+  var escapeHtml = AdminShell.escapeHtml;
+  var shell;
 
-  var gate = document.getElementById("gate");
-  var panel = document.getElementById("panel");
-  var tokenInput = document.getElementById("tokenInput");
-  var unlockBtn = document.getElementById("unlockBtn");
-  var gateError = document.getElementById("gateError");
-  var logoutBtn = document.getElementById("logoutBtn");
+  function formatDate(iso) { try { return new Date(iso).toLocaleString(); } catch (e) { return iso; } }
+  function formatDay(iso) { try { return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" }); } catch (e) { return iso; } }
 
-  function getToken() { return sessionStorage.getItem("adminToken") || ""; }
-
-  function authFetch(url, options) {
-    options = options || {};
-    options.headers = Object.assign({}, options.headers, { Authorization: "Bearer " + getToken() });
-    return fetch(url, options);
-  }
-
-  function escapeHtml(str) {
-    var div = document.createElement("div");
-    div.textContent = str == null ? "" : String(str);
-    return div.innerHTML;
-  }
-
-  function formatDate(iso) {
-    try { return new Date(iso).toLocaleString(); } catch (e) { return iso; }
-  }
-  function formatDay(iso) {
-    try { return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" }); } catch (e) { return iso; }
-  }
-
-  /* ---------- Analytics ---------- */
   function renderAnalytics(data) {
-    var approved = 0, pendingC = 0, rejectedC = 0;
+    var approved = 0, pendingC = 0;
     (data.commentsByStatus || []).forEach(function (r) {
       if (r.status === "approved") approved = r.count;
       if (r.status === "pending") pendingC = r.count;
-      if (r.status === "rejected") rejectedC = r.count;
     });
     var answered = 0, pendingQ = 0;
     (data.questionsByStatus || []).forEach(function (r) {
@@ -173,12 +109,11 @@
       return '<div class="stat-card"><div class="num">' + s.num + '</div><div class="lbl">' + s.lbl + '</div></div>';
     }).join("");
 
-    // 14-day sparkline
     var daily = data.dailyActivity || [];
     var max = Math.max.apply(null, daily.map(function (d) { return d.count; }).concat([1]));
     document.getElementById("sparkline").innerHTML = daily.map(function (d) {
       var h = Math.max(2, Math.round((d.count / max) * 60));
-      return '<div class="spark-bar' + (d.count > 0 ? ' has-activity' : '') + '" style="height:' + h + 'px" title="' + formatDay(d.day) + ': ' + d.count + '"></div>';
+      return '<div style="flex:1;min-height:2px;border-radius:2px 2px 0 0;background:' + (d.count > 0 ? "var(--accent)" : "var(--accent-dim)") + ';height:' + h + 'px" title="' + formatDay(d.day) + ': ' + d.count + '"></div>';
     }).join("") || '<p class="empty-note">No activity yet.</p>';
 
     renderBars("topComments", data.topPostsByComments || [], "post_slug");
@@ -192,13 +127,13 @@
     var max = Math.max.apply(null, rows.map(function (r) { return r.count; }));
     el.innerHTML = rows.map(function (r) {
       var pct = max ? Math.round((r.count / max) * 100) : 0;
-      return '<div class="bar-row"><span class="bar-label">' + escapeHtml(r[labelKey]) + '</span>' +
-        '<span class="bar-track"><span class="bar-fill" style="width:' + pct + '%"></span></span>' +
-        '<span class="bar-count">' + r.count + '</span></div>';
+      return '<div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;margin-bottom:8px;">' +
+        '<span style="width:130px;flex-shrink:0;color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + escapeHtml(r[labelKey]) + '</span>' +
+        '<span style="flex:1;height:8px;border-radius:4px;background:var(--bg-1);overflow:hidden;"><span style="display:block;height:100%;background:var(--accent);border-radius:4px;width:' + pct + '%"></span></span>' +
+        '<span style="width:30px;text-align:right;color:var(--text-muted);">' + r.count + '</span></div>';
     }).join("");
   }
 
-  /* ---------- Pending comments / questions ---------- */
   function renderComments(items) {
     var el = document.getElementById("commentsList");
     if (!items.length) { el.innerHTML = '<p class="empty-note">Nothing pending.</p>'; return; }
@@ -239,27 +174,25 @@
     }).join("");
   }
 
-  /* ---------- Approved comments: reply + react ---------- */
   function renderApproved(items) {
     var el = document.getElementById("approvedList");
     if (!items.length) { el.innerHTML = '<p class="empty-note">No approved comments yet.</p>'; return; }
     el.innerHTML = items.map(function (c) {
       var picker = EMOJI.map(function (e) {
         var selected = c.admin_reaction === e ? " is-selected" : "";
-        return '<button class="emoji-react' + selected + '" data-id="' + c.id + '" data-emoji="' + e + '" type="button">' + e + '</button>';
+        return '<button class="emoji-react' + selected + '" data-id="' + c.id + '" data-emoji="' + e + '" type="button" style="font-size:1rem;padding:5px 9px;border-radius:8px;border:1px solid var(--border);background:var(--bg-1);cursor:pointer;' + (selected ? "border-color:var(--teal);background:var(--teal-dim);" : "") + '">' + e + '</button>';
       }).join("");
       return '<div class="queue-item" data-id="' + c.id + '">' +
         '<p class="queue-item-meta">' + escapeHtml(c.name) + ' on <strong>' + escapeHtml(c.post_slug) + '</strong> &middot; ' + formatDate(c.created_at) + '</p>' +
         '<p class="queue-item-body">' + escapeHtml(c.body) + '</p>' +
         '<textarea class="answer-box" placeholder="Reply to this comment (visible publicly)..." data-reply-for="' + c.id + '">' + escapeHtml(c.admin_reply || "") + '</textarea>' +
         '<div class="queue-actions">' +
-          '<div class="emoji-picker">' + picker + '</div>' +
+          '<div style="display:flex;gap:6px;">' + picker + '</div>' +
           '<button class="save" data-save-reply-for="' + c.id + '">Save Reply</button>' +
         '</div></div>';
     }).join("");
   }
 
-  /* ---------- Load everything ---------- */
   function loadAll() {
     Promise.all([
       authFetch("/api/admin/pending"),
@@ -267,7 +200,7 @@
       authFetch("/api/admin/analytics")
     ]).then(function (responses) {
       if (responses.some(function (r) { return r.status === 401; })) {
-        showGate("That token isn't right.");
+        shell.showGate("That token isn't right.");
         return null;
       }
       return Promise.all(responses.map(function (r) { return r.json(); }));
@@ -280,32 +213,9 @@
       renderApproved(approved.comments || []);
       renderAnalytics(analytics);
     }).catch(function () {
-      showGate("Couldn't reach the server. Try again.");
+      shell.showGate("Couldn't reach the server. Try again.");
     });
   }
-
-  function showGate(errorMsg) {
-    sessionStorage.removeItem("adminToken");
-    panel.hidden = true;
-    gate.hidden = false;
-    if (errorMsg) { gateError.textContent = errorMsg; gateError.hidden = false; } else { gateError.hidden = true; }
-  }
-
-  function showPanel() {
-    gate.hidden = true;
-    panel.hidden = false;
-    loadAll();
-  }
-
-  unlockBtn.addEventListener("click", function () {
-    var token = tokenInput.value.trim();
-    if (!token) return;
-    sessionStorage.setItem("adminToken", token);
-    showPanel();
-  });
-  tokenInput.addEventListener("keydown", function (e) { if (e.key === "Enter") unlockBtn.click(); });
-
-  logoutBtn.addEventListener("click", function () { showGate(); });
 
   document.addEventListener("click", function (e) {
     var emojiBtn = e.target.closest(".emoji-react");
@@ -314,51 +224,43 @@
       var emoji = emojiBtn.getAttribute("data-emoji");
       var alreadySelected = emojiBtn.classList.contains("is-selected");
       authFetch("/api/admin/react", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: id, emoji: alreadySelected ? "" : emoji })
       }).then(function () { loadAll(); });
       return;
     }
-
     var saveBtn = e.target.closest("[data-save-reply-for]");
     if (saveBtn) {
       var replyId = saveBtn.getAttribute("data-save-reply-for");
       var textarea = document.querySelector('[data-reply-for="' + replyId + '"]');
       authFetch("/api/admin/reply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: replyId, reply: textarea.value.trim() })
       }).then(function () { loadAll(); });
       return;
     }
-
     var btn = e.target.closest("button[data-type]");
     if (!btn) return;
     var type = btn.getAttribute("data-type");
     var id = btn.getAttribute("data-id");
     var action = btn.getAttribute("data-action");
-
     if (type === "question" && action === "answer") {
       var qTextarea = document.querySelector('[data-answer-for="' + id + '"]');
       var answer = qTextarea ? qTextarea.value.trim() : "";
       if (!answer) { qTextarea.focus(); return; }
       authFetch("/api/admin/answer", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: id, answer: answer })
       }).then(function () { loadAll(); });
       return;
     }
-
     authFetch("/api/admin/moderate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: type, id: id, action: action })
     }).then(function () { loadAll(); });
   });
 
-  if (getToken()) { showPanel(); }
+  shell = AdminShell.init("dashboard", loadAll);
 })();
 </script>
 

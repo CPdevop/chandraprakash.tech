@@ -127,9 +127,27 @@
         <span class="post-card-arrow">Read the article &rarr;</span>
       </a>
 
+      <div id="cmsPostList"></div>
     </div>
   </div>
 </main>
+
+<script>
+(function () {
+  fetch("/api/articles").then(function (r) { return r.json(); }).then(function (data) {
+    var articles = data.articles || [];
+    if (!articles.length) return;
+    function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
+    document.getElementById("cmsPostList").innerHTML = articles.map(function (a) {
+      return '<a href="/blog/' + esc(a.slug) + '/" class="post-card">' +
+        (a.category ? '<p class="post-card-meta">' + esc(a.category) + '</p>' : '') +
+        '<h2>' + esc(a.title) + '</h2>' +
+        (a.dek ? '<p>' + esc(a.dek) + '</p>' : '') +
+        '<span class="post-card-arrow">Read the article &rarr;</span></a>';
+    }).join("");
+  }).catch(function () {});
+})();
+</script>
 
 <footer class="site-footer">
   <div class="container footer-inner">

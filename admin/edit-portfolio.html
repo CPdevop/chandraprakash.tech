@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Project | Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/admin.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css">
+</head>
+<body class="admin-body">
+
+<div id="gate" class="gate">
+  <h1>Admin</h1>
+  <p>Enter the admin token to continue.</p>
+  <input type="password" id="tokenInput" placeholder="Admin token" autocomplete="off">
+  <button class="btn btn-primary" id="unlockBtn">Unlock</button>
+  <p class="save-status is-error" id="gateError" hidden></p>
+</div>
+
+<div id="shellRoot" class="admin-shell" hidden>
+  <div id="sidebarMount"></div>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <h1 id="pageTitle">New Project</h1>
+        <p>Write the case study in Markdown. Code blocks and <code>```mermaid</code> diagrams render automatically.</p>
+      </div>
+      <a href="/admin/portfolio.html" class="btn btn-ghost">&larr; All Projects</a>
+    </div>
+
+    <div class="editor-row">
+      <div class="editor-field" style="flex:2;">
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Project name">
+      </div>
+      <div class="editor-field" style="flex:1;">
+        <label for="category">Category</label>
+        <input type="text" id="category" placeholder="e.g. Data Quality Engineering">
+      </div>
+    </div>
+
+    <div class="editor-row">
+      <div class="editor-field" style="flex:2;">
+        <label for="slug">Slug</label>
+        <input type="text" id="slug" placeholder="auto-generated-from-title">
+        <p class="hint">Lives at /work/<span id="slugPreview">your-slug</span>/</p>
+      </div>
+      <div class="editor-field" style="flex:1;">
+        <label for="status">Status</label>
+        <select id="status">
+          <option value="draft">Draft</option>
+          <option value="published">Published</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="editor-row">
+      <div class="editor-field" style="flex:2;">
+        <label for="techTags">Technologies (comma-separated)</label>
+        <input type="text" id="techTags" placeholder="SQL, Python, Snowflake">
+      </div>
+      <div class="editor-field" style="flex:1;">
+        <label for="githubUrl">GitHub URL (optional)</label>
+        <input type="url" id="githubUrl" placeholder="https://github.com/...">
+      </div>
+    </div>
+
+    <div class="editor-field">
+      <label for="summary">Summary (shown on the card and under the title)</label>
+      <textarea id="summary" rows="2" maxlength="300"></textarea>
+    </div>
+
+    <div class="editor-field">
+      <label>Cover Image (used for social sharing previews)</label>
+      <div class="image-drop" id="coverDrop">Click or drop an image here (under 4MB)</div>
+      <input type="file" id="coverInput" accept="image/*">
+      <img id="coverPreview" class="cover-preview" hidden>
+      <input type="hidden" id="coverImageUrl">
+    </div>
+
+    <div class="editor-field">
+      <label>Case Study Body</label>
+      <div class="md-toolbar">
+        <button type="button" data-insert="bold">Bold</button>
+        <button type="button" data-insert="italic">Italic</button>
+        <button type="button" data-insert="h2">Heading</button>
+        <button type="button" data-insert="link">Link</button>
+        <button type="button" data-insert="code">Code Block</button>
+        <button type="button" data-insert="mermaid">Diagram</button>
+        <button type="button" id="insertImageBtn">Insert Image</button>
+      </div>
+      <input type="file" id="bodyImageInput" accept="image/*" hidden>
+      <div class="editor-grid">
+        <textarea id="bodyMarkdown" placeholder="Problem, approach, what you built, outcome..."></textarea>
+        <div class="md-preview" id="mdPreview"></div>
+      </div>
+    </div>
+
+    <div class="editor-actions">
+      <button class="btn btn-primary" id="saveBtn">Save</button>
+      <a href="#" id="viewLink" target="_blank" rel="noopener" hidden style="font-size:0.85rem;color:var(--accent-soft);">View live &rarr;</a>
+      <span class="save-status" id="saveStatus"></span>
+    </div>
+  </main>
+</div>
+
+<script src="/js/admin-shell.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var authFetch = AdminShell.authFetch;
+  var itemId = new URLSearchParams(location.search).get("id");
+  var shell;
+
+  var titleEl = document.getElementById("title");
+  var slugEl = document.getElementById("slug");
+  var slugPreview = document.getElementById("slugPreview");
+  var categoryEl = document.getElementById("category");
+  var summaryEl = document.getElementById("summary");
+  var techTagsEl = document.getElementById("techTags");
+  var githubUrlEl = document.getElementById("githubUrl");
+  var statusEl = document.getElementById("status");
+  var bodyEl = document.getElementById("bodyMarkdown");
+  var previewEl = document.getElementById("mdPreview");
+  var coverImageUrlEl = document.getElementById("coverImageUrl");
+  var coverPreview = document.getElementById("coverPreview");
+  var saveStatus = document.getElementById("saveStatus");
+  var viewLink = document.getElementById("viewLink");
+  var slugManuallyEdited = false;
+
+  function slugify(text) {
+    return text.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  }
+
+  titleEl.addEventListener("input", function () {
+    if (!slugManuallyEdited) {
+      slugEl.value = slugify(titleEl.value);
+      slugPreview.textContent = slugEl.value || "your-slug";
+    }
+  });
+  slugEl.addEventListener("input", function () {
+    slugManuallyEdited = true;
+    slugPreview.textContent = slugEl.value || "your-slug";
+  });
+
+  var renderer = new marked.Renderer();
+  var originalCode = renderer.code.bind(renderer);
+  renderer.code = function (token) {
+    var lang = (token.lang || "").trim().toLowerCase();
+    if (lang === "mermaid") return '<pre class="mermaid">' + token.text.replace(/</g, "&lt;") + "</pre>";
+    return originalCode(token);
+  };
+  marked.setOptions({ renderer: renderer, gfm: true });
+  mermaid.initialize({ startOnLoad: false, theme: "dark" });
+
+  var previewTimer;
+  function updatePreview() {
+    clearTimeout(previewTimer);
+    previewTimer = setTimeout(function () {
+      previewEl.innerHTML = marked.parse(bodyEl.value || "*Nothing written yet.*");
+      if (window.hljs) previewEl.querySelectorAll("pre code").forEach(function (b) { hljs.highlightElement(b); });
+      var diagrams = previewEl.querySelectorAll("pre.mermaid");
+      if (diagrams.length && window.mermaid) mermaid.run({ nodes: diagrams }).catch(function () {});
+    }, 250);
+  }
+  bodyEl.addEventListener("input", updatePreview);
+
+  function wrapSelection(before, after, placeholder) {
+    var start = bodyEl.selectionStart, end = bodyEl.selectionEnd;
+    var selected = bodyEl.value.slice(start, end) || placeholder;
+    bodyEl.value = bodyEl.value.slice(0, start) + before + selected + after + bodyEl.value.slice(end);
+    bodyEl.focus();
+    bodyEl.selectionStart = start + before.length;
+    bodyEl.selectionEnd = start + before.length + selected.length;
+    updatePreview();
+  }
+  document.querySelectorAll("[data-insert]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var kind = btn.getAttribute("data-insert");
+      if (kind === "bold") wrapSelection("**", "**", "bold text");
+      if (kind === "italic") wrapSelection("*", "*", "italic text");
+      if (kind === "h2") wrapSelection("\n## ", "\n", "Heading");
+      if (kind === "link") wrapSelection("[", "](https://example.com)", "link text");
+      if (kind === "code") wrapSelection("\n```python\n", "\n```\n", "your code here");
+      if (kind === "mermaid") wrapSelection("\n```mermaid\nflowchart LR\n  Source --> Ingest --> Validate --> Trusted\n```\n", "", "");
+    });
+  });
+
+  function uploadImage(file, onDone) {
+    if (file.size > 4 * 1024 * 1024) { alert("Image is too large. Keep uploads under 4MB."); return; }
+    var reader = new FileReader();
+    reader.onload = function () {
+      saveStatus.textContent = "Uploading image...";
+      authFetch("/api/admin/upload", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name, dataUrl: reader.result })
+      }).then(function (r) { return r.json(); }).then(function (data) {
+        saveStatus.textContent = "";
+        if (data.url) onDone(data.url);
+        else alert(data.error || "Upload failed.");
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  var coverDrop = document.getElementById("coverDrop");
+  var coverInput = document.getElementById("coverInput");
+  coverDrop.addEventListener("click", function () { coverInput.click(); });
+  coverDrop.addEventListener("dragover", function (e) { e.preventDefault(); coverDrop.classList.add("is-dragover"); });
+  coverDrop.addEventListener("dragleave", function () { coverDrop.classList.remove("is-dragover"); });
+  coverDrop.addEventListener("drop", function (e) {
+    e.preventDefault(); coverDrop.classList.remove("is-dragover");
+    if (e.dataTransfer.files[0]) uploadImage(e.dataTransfer.files[0], setCoverImage);
+  });
+  coverInput.addEventListener("change", function () {
+    if (coverInput.files[0]) uploadImage(coverInput.files[0], setCoverImage);
+  });
+  function setCoverImage(url) {
+    coverImageUrlEl.value = url;
+    coverPreview.src = url;
+    coverPreview.hidden = false;
+  }
+
+  var bodyImageInput = document.getElementById("bodyImageInput");
+  document.getElementById("insertImageBtn").addEventListener("click", function () { bodyImageInput.click(); });
+  bodyImageInput.addEventListener("change", function () {
+    if (bodyImageInput.files[0]) {
+      uploadImage(bodyImageInput.files[0], function (url) {
+        var pos = bodyEl.selectionStart;
+        var insertion = "![description](" + url + ")\n";
+        bodyEl.value = bodyEl.value.slice(0, pos) + insertion + bodyEl.value.slice(pos);
+        updatePreview();
+      });
+    }
+  });
+
+  function loadExisting() {
+    if (!itemId) return;
+    document.getElementById("pageTitle").textContent = "Edit Project";
+    authFetch("/api/admin/portfolio-item?id=" + itemId).then(function (r) { return r.json(); }).then(function (data) {
+      var a = data.item;
+      if (!a) return;
+      titleEl.value = a.title;
+      slugEl.value = a.slug;
+      slugManuallyEdited = true;
+      slugPreview.textContent = a.slug;
+      categoryEl.value = a.category || "";
+      summaryEl.value = a.summary || "";
+      techTagsEl.value = a.tech_tags || "";
+      githubUrlEl.value = a.github_url || "";
+      statusEl.value = a.status;
+      bodyEl.value = a.body_markdown || "";
+      if (a.cover_image_url) setCoverImage(a.cover_image_url);
+      if (a.status === "published") {
+        viewLink.href = "/work/" + a.slug + "/";
+        viewLink.hidden = false;
+      }
+      updatePreview();
+    });
+  }
+
+  document.getElementById("saveBtn").addEventListener("click", function () {
+    if (!titleEl.value.trim()) { saveStatus.textContent = "Title is required."; saveStatus.className = "save-status is-error"; return; }
+    var payload = {
+      title: titleEl.value.trim(),
+      slug: slugEl.value.trim(),
+      category: categoryEl.value.trim(),
+      summary: summaryEl.value.trim(),
+      techTags: techTagsEl.value.trim(),
+      githubUrl: githubUrlEl.value.trim(),
+      status: statusEl.value,
+      bodyMarkdown: bodyEl.value,
+      coverImageUrl: coverImageUrlEl.value
+    };
+    saveStatus.textContent = "Saving...";
+    saveStatus.className = "save-status";
+
+    var req = itemId
+      ? authFetch("/api/admin/portfolio-item?id=" + itemId, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+      : authFetch("/api/admin/portfolio", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+
+    req.then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+      .then(function (result) {
+        if (result.ok) {
+          saveStatus.textContent = "Saved.";
+          saveStatus.className = "save-status is-good";
+          if (!itemId) {
+            location.href = "/admin/edit-portfolio.html?id=" + result.data.id;
+          } else if (statusEl.value === "published") {
+            viewLink.href = "/work/" + result.data.slug + "/";
+            viewLink.hidden = false;
+          }
+        } else {
+          saveStatus.textContent = result.data.error || "Something went wrong.";
+          saveStatus.className = "save-status is-error";
+        }
+      });
+  });
+
+  shell = AdminShell.init("portfolio", loadExisting);
+  updatePreview();
+})();
+</script>
+
+</body>
+</html>

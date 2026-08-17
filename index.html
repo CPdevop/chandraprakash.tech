@@ -627,6 +627,7 @@
           </div>
           <a href="https://github.com/CPdevop/dq-etl-pipeline" target="_blank" rel="noopener noreferrer" class="project-link">View on GitHub &rarr;</a>
         </article>
+        <div id="cmsPortfolioGrid" style="display:contents;"></div>
       </div>
 
       <a href="#trust-score" class="work-feature" data-animate="fade-up">
@@ -727,6 +728,25 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script>
+(function () {
+  fetch("/api/portfolio").then(function (r) { return r.json(); }).then(function (data) {
+    var items = data.items || [];
+    if (!items.length) return;
+    function esc(s) { var d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
+    document.getElementById("cmsPortfolioGrid").innerHTML = items.map(function (p) {
+      var tags = (p.tech_tags || "").split(",").map(function (t) { return t.trim(); }).filter(Boolean);
+      return '<article class="project-card">' +
+        (p.category ? '<p class="post-card-meta">' + esc(p.category) + '</p>' : '') +
+        '<h3>' + esc(p.title) + '</h3>' +
+        (p.summary ? '<p>' + esc(p.summary) + '</p>' : '') +
+        (tags.length ? '<div class="project-tags">' + tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join("") + '</div>' : '') +
+        '<a href="/work/' + esc(p.slug) + '/" class="project-link">Read the case study &rarr;</a>' +
+        '</article>';
+    }).join("");
+  }).catch(function () {});
+})();
+</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
