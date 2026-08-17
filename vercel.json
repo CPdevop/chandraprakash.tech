@@ -1,8 +1,27 @@
 {
   "rewrites": [
-    { "source": "/blog/:slug", "destination": "/api/article?slug=:slug" },
-    { "source": "/blog/:slug/", "destination": "/api/article?slug=:slug" },
-    { "source": "/work/:slug", "destination": "/api/portfolio-item?slug=:slug" },
-    { "source": "/work/:slug/", "destination": "/api/portfolio-item?slug=:slug" }
+    { "source": "/blog/:slug", "destination": "/api/render?kind=article&slug=:slug" },
+    { "source": "/blog/:slug/", "destination": "/api/render?kind=article&slug=:slug" },
+    { "source": "/work/:slug", "destination": "/api/render?kind=portfolio&slug=:slug" },
+    { "source": "/work/:slug/", "destination": "/api/render?kind=portfolio&slug=:slug" },
+
+    { "source": "/api/comments", "destination": "/api/content?resource=comments" },
+    { "source": "/api/questions", "destination": "/api/content?resource=questions" },
+    { "source": "/api/reactions", "destination": "/api/content?resource=reactions" },
+    { "source": "/api/inquiries", "destination": "/api/content?resource=inquiries" },
+    { "source": "/api/articles", "destination": "/api/content?resource=articles" },
+    { "source": "/api/portfolio", "destination": "/api/content?resource=portfolio" },
+
+    { "source": "/api/admin/pending", "destination": "/api/admin/moderation?resource=pending" },
+    { "source": "/api/admin/moderate", "destination": "/api/admin/moderation?resource=moderate" },
+    { "source": "/api/admin/answer", "destination": "/api/admin/moderation?resource=answer" },
+    { "source": "/api/admin/comments", "destination": "/api/admin/moderation?resource=approved-comments" },
+    { "source": "/api/admin/reply", "destination": "/api/admin/moderation?resource=reply" },
+    { "source": "/api/admin/react", "destination": "/api/admin/moderation?resource=react" },
+
+    { "source": "/api/admin/articles", "destination": "/api/admin/content?resource=articles" },
+    { "source": "/api/admin/article", "destination": "/api/admin/content?resource=article" },
+    { "source": "/api/admin/portfolio", "destination": "/api/admin/content?resource=portfolio-list" },
+    { "source": "/api/admin/portfolio-item", "destination": "/api/admin/content?resource=portfolio-item" }
   ]
 }
