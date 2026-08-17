@@ -13,8 +13,11 @@ module.exports = async function handler(req, res) {
   if (!isAdminRequest(req)) {
     return sendJson(res, 401, { error: "Unauthorized" });
   }
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return sendJson(res, 500, { error: "Image storage isn't configured yet (missing BLOB_READ_WRITE_TOKEN)." });
+  // Newer Vercel Blob stores connect via BLOB_STORE_ID + an automatic runtime
+  // credential (OIDC) rather than a manually-copied BLOB_READ_WRITE_TOKEN, so
+  // accept either as evidence the store is actually connected to this project.
+  if (!process.env.BLOB_READ_WRITE_TOKEN && !process.env.BLOB_STORE_ID) {
+    return sendJson(res, 500, { error: "Image storage isn't connected yet. Create/connect a Blob store in the Vercel dashboard." });
   }
 
   var body = req.body || {};
