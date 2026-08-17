@@ -80,8 +80,9 @@ CREATE TABLE IF NOT EXISTS post_reactions (
 );
 CREATE INDEX IF NOT EXISTS idx_post_reactions_slug ON post_reactions (post_slug);
 
--- CMS: articles (replaces hand-authored HTML for anything created from now on;
--- the 8 existing static articles are untouched and keep living as files)
+-- CMS: articles. All content, including the original hand-authored articles,
+-- lives here now (migrated via scripts/migrate.js's one-off sibling script)
+-- and renders through api/render.js — there are no more static article files.
 CREATE TABLE IF NOT EXISTS articles (
   id              SERIAL PRIMARY KEY,
   slug            TEXT UNIQUE NOT NULL,

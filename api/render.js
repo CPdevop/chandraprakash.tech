@@ -25,6 +25,15 @@ module.exports = async function handler(req, res) {
       }
       var article = rows[0];
       article.bodyHtml = renderMarkdown(article.body_markdown);
+
+      // "Next article" nav: cyclical order over all published articles by id.
+      var all = await sql`SELECT id, slug, title FROM articles WHERE status = 'published' ORDER BY id ASC`;
+      if (all.length > 1) {
+        var idx = all.findIndex(function (a) { return a.id === article.id; });
+        var next = all[(idx + 1) % all.length];
+        article.nextArticle = { slug: next.slug, title: next.title };
+      }
+
       res.status(200); res.setHeader("Content-Type", "text/html; charset=utf-8");
       return res.end(renderArticlePage(article));
     }

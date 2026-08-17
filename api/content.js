@@ -204,7 +204,7 @@ async function inquiriesHandler(req, res) {
 async function articlesListHandler(req, res) {
   if (req.method !== "GET") { res.setHeader("Allow", "GET"); return sendJson(res, 405, { error: "Method not allowed" }); }
   try {
-    var rows = await sql`SELECT slug, title, dek, category, published_at FROM articles WHERE status = 'published' ORDER BY published_at DESC`;
+    var rows = await sql`SELECT slug, title, dek, category, published_at FROM articles WHERE status = 'published' ORDER BY published_at DESC, id DESC`;
     return sendJson(res, 200, { articles: rows });
   } catch (err) {
     console.error("articles list failed", err);
@@ -215,7 +215,7 @@ async function articlesListHandler(req, res) {
 async function portfolioListHandler(req, res) {
   if (req.method !== "GET") { res.setHeader("Allow", "GET"); return sendJson(res, 405, { error: "Method not allowed" }); }
   try {
-    var rows = await sql`SELECT slug, title, category, summary, tech_tags, github_url, published_at FROM portfolio_items WHERE status = 'published' ORDER BY published_at DESC`;
+    var rows = await sql`SELECT slug, title, category, summary, tech_tags, github_url, published_at FROM portfolio_items WHERE status = 'published' ORDER BY published_at DESC, id DESC`;
     return sendJson(res, 200, { items: rows });
   } catch (err) {
     console.error("portfolio list failed", err);
