@@ -7,6 +7,7 @@ const { sql } = require("../lib/db");
 
 const STATIC_URLS = [
   { loc: "/", changefreq: "monthly", priority: "1.0" },
+  { loc: "/hire/", changefreq: "monthly", priority: "0.9" },
   { loc: "/blog/", changefreq: "weekly", priority: "0.8" },
   { loc: "/questions/", changefreq: "weekly", priority: "0.6" },
 ];
