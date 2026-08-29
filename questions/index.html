@@ -144,6 +144,31 @@
         '<p class="qa-meta">Asked by ' + escapeHtml(q.name) + ' &middot; answered ' + formatDate(q.answered_at) + '</p>' +
         '</article>';
     }).join("");
+    injectFaqSchema(items);
+  }
+
+  // FAQPage structured data, built from the real answered questions actually
+  // shown on the page — lets these show up as rich results in search.
+  function injectFaqSchema(items) {
+    var existing = document.getElementById("faqSchema");
+    if (existing) existing.remove();
+    if (!items.length) return;
+    var schema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": items.map(function (q) {
+        return {
+          "@type": "Question",
+          "name": q.question,
+          "acceptedAnswer": { "@type": "Answer", "text": q.answer }
+        };
+      })
+    };
+    var script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.id = "faqSchema";
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
   }
 
   fetch("/api/questions").then(function (r) { return r.json(); }).then(function (data) {
