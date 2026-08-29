@@ -1411,6 +1411,84 @@ svg { display: block; }
 .contact-icon { width: 22px; height: 22px; color: var(--accent-soft); flex-shrink: 0; }
 .contact-icon svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
+.inquiry-wrap {
+  max-width: 560px;
+  margin-top: 52px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border-soft);
+}
+.inquiry-wrap h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.inquiry-wrap .comment-form { margin-top: 18px; padding-top: 0; border-top: none; }
+
+/* Shared form styles — used by the inquiry form here, and by the comment /
+   question forms on article and Q&A pages (blog.css, loaded alongside this). */
+.comment-form {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-soft);
+}
+.cf-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.comment-form input,
+.comment-form select,
+.comment-form textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-1);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+.comment-form select {
+  margin-top: 12px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa5b8' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 38px;
+}
+.comment-form select:invalid { color: var(--text-muted); }
+.comment-form textarea {
+  margin-top: 12px;
+  min-height: 90px;
+  resize: vertical;
+}
+.comment-form input:focus,
+.comment-form select:focus,
+.comment-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-soft);
+}
+.comment-form .btn { margin-top: 14px; }
+.hp-field {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden;
+}
+.comment-status {
+  margin-top: 12px;
+  font-size: 0.86rem;
+  color: var(--good);
+}
+.comment-status.is-error { color: #e05252; }
+
+@media (max-width: 520px) {
+  .cf-row { grid-template-columns: 1fr; }
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */

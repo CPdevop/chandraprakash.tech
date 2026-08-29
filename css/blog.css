@@ -321,53 +321,6 @@ article.article-body blockquote {
   white-space: pre-wrap;
 }
 
-.comment-form {
-  margin-top: 32px;
-  padding-top: 28px;
-  border-top: 1px solid var(--border-soft);
-}
-.cf-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-.comment-form input,
-.comment-form textarea {
-  width: 100%;
-  padding: 11px 14px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg-1);
-  color: var(--text-primary);
-  font-family: inherit;
-  font-size: 0.9rem;
-  box-sizing: border-box;
-}
-.comment-form textarea {
-  margin-top: 12px;
-  min-height: 90px;
-  resize: vertical;
-}
-.comment-form input:focus,
-.comment-form textarea:focus {
-  outline: none;
-  border-color: var(--accent-soft);
-}
-.comment-form .btn { margin-top: 14px; }
-.hp-field {
-  position: absolute !important;
-  left: -9999px !important;
-  width: 1px !important;
-  height: 1px !important;
-  overflow: hidden;
-}
-.comment-status {
-  margin-top: 12px;
-  font-size: 0.86rem;
-  color: var(--good);
-}
-.comment-status.is-error { color: #e05252; }
-
-@media (max-width: 520px) {
-  .cf-row { grid-template-columns: 1fr; }
-}
+/* Shared .comment-form / .cf-row / .hp-field / .comment-status styles now
+   live in styles.css (loaded on every page, including the homepage which
+   doesn't load this file) so they're not duplicated. */

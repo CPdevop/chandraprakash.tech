@@ -687,6 +687,26 @@
           </span>
         </a>
       </div>
+
+      <div class="inquiry-wrap" data-animate="fade-up">
+        <h3>Or Send a Message Directly</h3>
+        <form class="comment-form" id="inquiryForm">
+          <div class="cf-row">
+            <input type="text" name="name" placeholder="Name" required maxlength="100">
+            <input type="email" name="email" placeholder="Email" required maxlength="254">
+          </div>
+          <select name="inquiryType" required>
+            <option value="" disabled selected>What's this about?</option>
+            <option value="freelance">A freelance or contract project</option>
+            <option value="job">A full-time role</option>
+            <option value="general">Something else</option>
+          </select>
+          <textarea name="message" placeholder="Tell me a bit about it..." required maxlength="3000"></textarea>
+          <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="comment-status" id="inquiryStatus" hidden></p>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -724,6 +744,47 @@
         '</article>';
     }).join("");
   }).catch(function () {});
+})();
+</script>
+<script>
+(function () {
+  var form = document.getElementById("inquiryForm");
+  if (!form) return;
+  var statusEl = document.getElementById("inquiryStatus");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var formData = new FormData(form);
+    var payload = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      inquiryType: formData.get("inquiryType"),
+      message: formData.get("message"),
+      website: formData.get("website")
+    };
+    var submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
+    fetch("/api/inquiries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) { return r.json().then(function (data) { return { ok: r.ok, data: data }; }); })
+      .then(function (result) {
+        submitBtn.disabled = false;
+        statusEl.hidden = false;
+        statusEl.classList.toggle("is-error", !result.ok);
+        statusEl.textContent = result.ok ? (result.data.message || "Thanks — I'll get back to you soon.") : (result.data.error || "Something went wrong.");
+        if (result.ok) form.reset();
+      })
+      .catch(function () {
+        submitBtn.disabled = false;
+        statusEl.hidden = false;
+        statusEl.classList.add("is-error");
+        statusEl.textContent = "Something went wrong. Please try again.";
+      });
+  });
 })();
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
